@@ -35,6 +35,7 @@ function App() {
     }
 
     let filteredTasksForTodolist: TaskPropsType[] = tasksList
+
     if (filter === 'active') {
         filteredTasksForTodolist = tasksList.filter(t => !t.isDone)
     }
@@ -53,7 +54,8 @@ function App() {
                       removeTask={removeTask}
                       addTask={addTask}
                       changeTaskStatus={changeTaskStatus}
-                      changeFilter={changeFilter}/>
+                      changeFilter={changeFilter}
+                      filter={filter}/>
         </div>
     );
 }

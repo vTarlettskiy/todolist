@@ -10,6 +10,7 @@ type TodolistPropsType = {
     addTask: (titleValue: string) => void
     changeTaskStatus: (taskId: string, checked: boolean) => void
     changeFilter: (newFilterValue: FilterValuesType) => void
+    filter: FilterValuesType
 }
 
 export type TaskPropsType = {
@@ -18,16 +19,24 @@ export type TaskPropsType = {
     isDone: boolean
 }
 
-export const Todolist = ({changeFilter, title, tasks, removeTask, addTask, changeTaskStatus}: TodolistPropsType) => {
+export const Todolist = ({changeFilter, title, tasks, removeTask, addTask, changeTaskStatus, filter}: TodolistPropsType) => {
 
     const [titleInputValue, setTitleInputValue] = useState('')
 
+    const [taskInputError, setTaskInputError] = useState<string | null>(null)
+
     const addTaskHandler = () => {
-        addTask(titleInputValue)
+        const trimmedTitle = titleInputValue.trim()
+        if (trimmedTitle) {
+            addTask(titleInputValue)
+        } else {
+            setTaskInputError('Title is required!')
+        }
         setTitleInputValue('')
     }
 
     const changeTaskTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        taskInputError && setTaskInputError(null)
         setTitleInputValue(e.currentTarget.value)
     }
 
@@ -47,6 +56,8 @@ export const Todolist = ({changeFilter, title, tasks, removeTask, addTask, chang
 
     const userTaskTitleLengthWarning =  titleInputValue.length > 15 && <div>Recommended task title length must be not more then 15 symbols</div>
 
+    const userTaskEmptyTitleError =  taskInputError && <div style={{color: 'red'}}>{taskInputError}</div>
+
     const tasksElements: Array<JSX.Element> | JSX.Element = tasks.length !== 0
         ? tasks.map(task => {
 
@@ -54,8 +65,10 @@ export const Todolist = ({changeFilter, title, tasks, removeTask, addTask, chang
 
             return (
                 <li key={task.id}>
-                    <input type="checkbox" checked={task.isDone} onChange={(e) => changeTaskStatusHandler(e, task.id)}/>
-                    <span>{task.title}</span>
+                    <input type="checkbox"
+                           checked={task.isDone}
+                           onChange={(e) => changeTaskStatusHandler(e, task.id)}/>
+                    <span className={task.isDone ? 'completedTask' : ''}>{task.title}</span>
                     <Button title={'x'} onClickHandler={removeTaskHandler}></Button>
                 </li>
             );
@@ -66,17 +79,18 @@ export const Todolist = ({changeFilter, title, tasks, removeTask, addTask, chang
         <div className={'todolist'}>
             <h3>{title}</h3>
             <div>
-                <input value={titleInputValue} onChange={changeTaskTitleHandler} onKeyDown={keyDownAddTaskHandler}/>
+                <input value={titleInputValue} onChange={changeTaskTitleHandler} onKeyDown={keyDownAddTaskHandler} className={taskInputError ? 'taskInputError' : ''}/>
                 <Button title={'+'} onClickHandler={addTaskHandler} disabled={isAddTaskButtonDisabled}/>
                 {userTaskTitleLengthWarning}
+                {userTaskEmptyTitleError}
             </div>
             <ul>
                 {tasksElements}
             </ul>
             <div>
-                <Button title={'All'} onClickHandler={setAllTasksHandler}/>
-                <Button title={'Active'} onClickHandler={setActiveTasksHandler}/>
-                <Button title={'Completed'} onClickHandler={setCompletedTasksHandler}/>
+                <Button classes={filter === 'all' ? 'activeFilter' : ''} title={'All'} onClickHandler={setAllTasksHandler}/>
+                <Button classes={filter === 'active' ? 'activeFilter' : ''} title={'Active'} onClickHandler={setActiveTasksHandler}/>
+                <Button classes={filter === 'completed' ? 'activeFilter' : ''} title={'Completed'} onClickHandler={setCompletedTasksHandler}/>
             </div>
         </div>
     );
