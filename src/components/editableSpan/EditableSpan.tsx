@@ -3,7 +3,6 @@ import {ChangeEvent, useState} from "react";
 type EditableSpanPropsType = {
     oldTitle: string
     updateItem: (newTitle: string) => void
-    itemId?: string
 }
 
 export const EditableSpan = ({oldTitle, updateItem}: EditableSpanPropsType) => {
@@ -26,8 +25,6 @@ export const EditableSpan = ({oldTitle, updateItem}: EditableSpanPropsType) => {
     const addItemHandler = () => {
         updateItem(newTitle)
     }
-
-
 
 
     return (

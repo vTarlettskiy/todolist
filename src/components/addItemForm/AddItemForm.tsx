@@ -5,8 +5,7 @@ import {ChangeEvent, KeyboardEvent, useState} from "react";
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
-
-};
+}
 
 export const AddItemForm = ({addItem}: AddItemFormPropsType) => {
 
