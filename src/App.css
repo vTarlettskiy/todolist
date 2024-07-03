@@ -7,31 +7,22 @@
   margin-right: 50px;
 }
 
-.todolist {
-  background-color: aqua;
-  border: 2px solid gray;
-  border-radius: 5px;
-  padding: 15px;
+.error {
+  border: red 1px solid;
 }
 
-.completedTask {
+.error-message {
+  color: red;
+}
+
+.active-filter {
+  background-color: lightgreen;
+}
+
+.is-done {
   opacity: 0.5;
-  text-decoration: line-through;
 }
-
-/*.task {*/
-/*  font-weight: bold;*/
-/*}*/
-
-.activeFilter {
-  background-color: #ff7ec2;
-  border-radius: 3px;
-  border: 2px solid #ff7ec2;
+.todolist-title-container {
+  display: flex;
+  align-items: center;
 }
-
-.taskInputError {
-  border: 2px solid red;
-  outline: none;
-}
-
-
