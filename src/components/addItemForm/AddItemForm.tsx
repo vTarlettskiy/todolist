@@ -1,7 +1,8 @@
 // @flow
 import * as React from 'react';
-import {Button} from "../button/Button";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
@@ -32,16 +33,27 @@ export const AddItemForm = ({addItem}: AddItemFormPropsType) => {
         }
     }
 
+    const buttonStyles= {
+        maxWidth: '40px',
+        maxHeight: '40px',
+        minHeight: '40px',
+        minWidth: '40px'
+    }
+
     return (
         <div>
-            <input
+            <TextField
+                id={'outlined-basic'}
+                helperText={error}
+                error={!!error}
+                size={'small'}
+                label={'Enter a title'}
+                variant={'outlined'}
                 className={error ? 'error' : ''}
                 value={taskTitle}
                 onChange={changeTaskTitleHandler}
-                onKeyUp={addTaskOnKeyUpHandler}
-            />
-            <Button title={'+'} onClick={addItemHandler}/>
-            {error && <div className={'error-message'}>{error}</div>}
+                onKeyUp={addTaskOnKeyUpHandler}/>
+            <Button variant="contained" onClick={addItemHandler} size='small' style={buttonStyles}>+</Button>
         </div>
     );
 };
