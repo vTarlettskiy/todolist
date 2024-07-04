@@ -7,6 +7,8 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import List from '@mui/material/List';
+import ButtonGroup from "@mui/material/ButtonGroup";
+import {filterButtonsContainerSx} from "./Todolist.styles";
 
 type PropsType = {
     title: string
@@ -93,14 +95,14 @@ export const Todolist = ({
                     </List>
             }
 
-            <div>
+            <ButtonGroup sx={filterButtonsContainerSx}>
                 <Button variant={filter === 'all' ? 'outlined' : 'contained'}
                         onClick={() => changeFilterTasksHandler('all')}>All</Button>
                 <Button variant={filter === 'active' ? 'outlined' : 'contained'}
                         onClick={() => changeFilterTasksHandler('active')}>Active</Button>
                 <Button variant={filter === 'completed' ? 'outlined' : 'contained'}
                         onClick={() => changeFilterTasksHandler('completed')}>Completed</Button>
-            </div>
+            </ButtonGroup>
         </div>
     )
 }
