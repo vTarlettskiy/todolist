@@ -43,6 +43,14 @@ export const Todolist1 = ({todolist}: PropsType) => {
         dispatch(changeTodolistTitleAC(id, title))
     }
 
+    if (filter === 'active') {
+        tasks = tasks.filter(t => !t.isDone)
+    }
+
+    if (filter === 'completed') {
+        tasks = tasks.filter(t => t.isDone)
+    }
+
     const mappedTasks = tasks.map((task) => {
 
         const removeTaskHandler = () => {
@@ -58,13 +66,7 @@ export const Todolist1 = ({todolist}: PropsType) => {
             dispatch(changeTaskTitleAC(task.id, newTitle, id))
         }
 
-        if (filter === 'active') {
-            tasks = tasks.filter(tasks => !tasks.isDone)
-        }
 
-        if (filter === 'completed') {
-            tasks = tasks.filter(task => task.isDone)
-        }
 
         return <Task task={task} removeTaskHandler={removeTaskHandler} changeTaskStatusHandler={changeTaskStatusHandler}
                      updateTaskHandler={updateTaskHandler}/>

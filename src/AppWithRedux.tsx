@@ -17,6 +17,7 @@ import {
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./reducers/task-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./reducers/store";
+import {Todolist1} from "./todolist/Todolist1";
 
 export type TaskType = {
     id: string
@@ -116,30 +117,11 @@ function AppWithRedux() {
                             const allTodolistTasks = tasks[tl.id]
                             let tasksForTodolist = allTodolistTasks
 
-                            if (tl.filter === 'active') {
-                                tasksForTodolist = allTodolistTasks.filter(task => !task.isDone)
-                            }
-
-                            if (tl.filter === 'completed') {
-                                tasksForTodolist = allTodolistTasks.filter(task => task.isDone)
-                            }
-
                             return (
                                 <Grid item key={tl.id}>
                                     <Paper elevation={6} sx={{p: '30px'}}>
-                                        <Todolist
-                                            key={tl.id}
-                                            todolistId={tl.id}
-                                            title={tl.title}
-                                            tasks={tasksForTodolist}
-                                            removeTask={removeTask}
-                                            changeFilter={changeFilter}
-                                            addTask={addTask}
-                                            changeTaskStatus={changeTaskStatus}
-                                            filter={tl.filter}
-                                            removeTodolist={removeTodolist}
-                                            updateTask={updateTask}
-                                            updateTodolist={updateTodolist}
+                                        <Todolist1
+                                            todolist={tl}
                                         />
                                     </Paper>
                                 </Grid>
