@@ -1,4 +1,4 @@
-import {FilterValuesType, TodolistType} from "../App";
+import {FilterValuesType, TasksStateType, TodolistType} from "../App";
 
 export type AddTodolistAT = {
     type: 'ADD-TODOLIST',
@@ -33,7 +33,9 @@ type ChangeTodolistTitleAT = {
 
 type AT = AddTodolistAT | RemoveTodolistAT | ChangeTodolistFilterAT | ChangeTodolistTitleAT
 
-export const todolistsReducer = (todolists: TodolistType[], action: AT): TodolistType[] => {
+const initialState: TodolistType[] = []
+
+export const todolistsReducer = (todolists: TodolistType[] = initialState, action: AT): TodolistType[] => {
 
     switch (action.type) {
         case 'ADD-TODOLIST': {
