@@ -14,6 +14,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../reducers/store";
 import {changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "../reducers/todolists-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "../reducers/task-reducer";
+import {ButtonWithMemo} from "../components/button/ButtonWithMemo";
+import {ButtonMemo} from "../components/button/ButtonMemo";
+import {TaskWithRedux} from "../task/TaskWithRedux";
 
 type PropsType = {
     todolist: TodolistType
@@ -51,26 +54,32 @@ export const Todolist1 = memo(({todolist}: PropsType) => {
         tasks = tasks.filter(t => t.isDone)
     }
 
-    const changeTaskStatus = useCallback((taskId: string, newStatusValue: boolean) => {
-        dispatch(changeTaskStatusAC(taskId, newStatusValue, id))
-    }, [dispatch])
+    // const changeTaskStatus = useCallback((taskId: string, newStatusValue: boolean) => {
+    //     dispatch(changeTaskStatusAC(taskId, newStatusValue, id))
+    // }, [dispatch])
+    //
+    // const removeTask = useCallback((taskId: string) => {
+    //     dispatch(removeTaskAC(taskId, id))
+    // }, [dispatch])
+    //
+    // const updateTask = useCallback((taskId: string, newTitle: string) => {
+    //     dispatch(changeTaskTitleAC(taskId, newTitle, id))
+    // }, [dispatch])
 
-    const removeTask = useCallback((taskId: string) => {
-        dispatch(removeTaskAC(taskId, id))
-    }, [dispatch])
-
-    const updateTask = useCallback((taskId: string, newTitle: string) => {
-        dispatch(changeTaskTitleAC(taskId, newTitle, id))
-    }, [dispatch])
+    // const mappedTasks = tasks.map((task) => {
+    //
+    //     return <Task key={task.id}
+    //                  task={task}
+    //                  removeTask={removeTask}
+    //                  changeTaskStatus={changeTaskStatus}
+    //                  updateTask={updateTask}/>
+    // })
 
     const mappedTasks = tasks.map((task) => {
 
-
-        return <Task key={task.id}
+        return <TaskWithRedux key={task.id}
                      task={task}
-                     removeTask={removeTask}
-                     changeTaskStatus={changeTaskStatus}
-                     updateTask={updateTask}/>
+                     todolistId={id}/>
     })
 
     return (
@@ -95,12 +104,18 @@ export const Todolist1 = memo(({todolist}: PropsType) => {
             }
 
             <ButtonGroup sx={filterButtonsContainerSx}>
-                <Button variant={filter === 'all' ? 'outlined' : 'contained'}
-                        onClick={() => changeFilterTasks('all')}>All</Button>
-                <Button variant={filter === 'active' ? 'outlined' : 'contained'}
-                        onClick={() => changeFilterTasks('active')}>Active</Button>
-                <Button variant={filter === 'completed' ? 'outlined' : 'contained'}
-                        onClick={() => changeFilterTasks('completed')}>Completed</Button>
+                <ButtonWithMemo variant={filter === 'all' ? 'outlined' : 'contained'}
+                                onClick={() => changeFilterTasks('all')}
+                                color={'inherit'}
+                                title={'All'}/>
+                <ButtonWithMemo variant={filter === 'active' ? 'outlined' : 'contained'}
+                                onClick={() => changeFilterTasks('active')}
+                                color={'primary'}
+                                title={'Active'}/>
+                <ButtonWithMemo variant={filter === 'completed' ? 'outlined' : 'contained'}
+                                onClick={() => changeFilterTasks('completed')}
+                                color={'secondary'}
+                                title={'Completed'}/>
             </ButtonGroup>
         </div>
     )

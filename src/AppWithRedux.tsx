@@ -40,49 +40,15 @@ type ThemeMode = 'dark' | 'light'
 
 function AppWithRedux() {
 
-    let todolistID1 = v1()
-    let todolistID2 = v1()
-
     let todolists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolists)
 
-    let tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-
     const dispatch = useDispatch()
-
-    const updateTodolist = (todolistID: string, title: string) => {
-        dispatch(changeTodolistTitleAC(todolistID, title))
-    }
-
-    const updateTask = (todolistID: string, taskID: string, title: string) => {
-        dispatch(changeTaskTitleAC(taskID, title, todolistID))
-    }
-
-    const removeTask = (taskId: string, todolistId: string) => {
-        dispatch(removeTaskAC(taskId, todolistId))
-    }
-
-    const changeTaskStatus = (taskId: string, taskStatus: boolean, todolistId: string) => {
-        dispatch(changeTaskStatusAC(taskId, taskStatus, todolistId))
-    }
-
-    const changeFilter = (filter: FilterValuesType, todolistId: string) => {
-        dispatch(changeTodolistFilterAC(todolistId, filter))
-    }
-
-    const removeTodolist = (todolistId: string) => {
-        let action = removeTodolistAC(todolistId)
-        dispatch(action)
-    }
-
-    const addTask = (title: string, todolistId: string) => {
-        dispatch(addTaskAC(title, todolistId))
-    }
 
     const addTodolist = useCallback((title: string) => {
         let todolistId = v1()
         let action = addTodolistAC(todolistId ,title)
         dispatch(action)
-    }, [])
+    }, [dispatch])
 
     const [themeMode, setThemeMode] = useState<ThemeMode>('light')
 

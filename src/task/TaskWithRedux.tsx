@@ -8,42 +8,43 @@ import CheckBox from "@mui/material/Checkbox";
 import ListItem from '@mui/material/ListItem';
 import {getListItemSx} from "./Task.styles";
 import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "../reducers/task-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "../reducers/store";
 
 type TaskPropsType = {
     task: TaskType
-    removeTask: (taskId: string) => void
-    updateTask: (taskId: string, newTitle: string) => void
-    changeTaskStatus: (taskId: string, newStatusValue: boolean) => void
+    todolistId: string
 }
 
-export const TaskWithRedux = memo(({task, updateTask, removeTask, changeTaskStatus}: TaskPropsType) => {
+export const TaskWithRedux = memo(({todolistId, task}: TaskPropsType) => {
 
+    const dispatch = useDispatch()
 
-    // const removeTaskHandler = useCallback(() => {
-    //     dispatch(removeTaskAC(task.id, id))
-    // }, [])
-    //
-    // const changeTaskStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    //     const newStatusValue = e.currentTarget.checked
-    //     dispatch(changeTaskStatusAC(task.id, newStatusValue, id))
-    // }, [])
-    //
-    // const updateTaskHandler = useCallback((newTitle: string) => {
-    //     dispatch(changeTaskTitleAC(task.id, newTitle, id))
-    // }, [])
+    const removeTask = useCallback(() => {
+        dispatch(removeTaskAC(task.id, todolistId))
+    }, [])
 
-    const removeTaskHandler = () => {
-        removeTask(task.id)
-    }
-
-    const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const changeTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         const newStatusValue = e.currentTarget.checked
-        changeTaskStatus(task.id, newStatusValue)
-    }
+        dispatch(changeTaskStatusAC(task.id, newStatusValue, todolistId))
+    }, [])
 
-    const updateTaskHandler = (newTitle: string) => {
-        updateTask(task.id, newTitle)
-    }
+    const updateTask = useCallback((newTitle: string) => {
+        dispatch(changeTaskTitleAC(task.id, newTitle, todolistId))
+    }, [])
+
+    // const removeTaskHandler = () => {
+    //     removeTask(task.id)
+    // }
+    //
+    // const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    //     const newStatusValue = e.currentTarget.checked
+    //     changeTaskStatus(task.id, newStatusValue)
+    // }
+    //
+    // const updateTaskHandler = (newTitle: string) => {
+    //     updateTask(task.id, newTitle)
+    // }
 
     return (
         <ListItem
@@ -51,15 +52,15 @@ export const TaskWithRedux = memo(({task, updateTask, removeTask, changeTaskStat
             <div>
                 <CheckBox
                     checked={task.isDone}
-                    onChange={changeTaskStatusHandler}/>
+                    onChange={changeTaskStatus}/>
                 <EditableSpan
                     oldTitle={task.title}
-                    updateItem={updateTaskHandler}/>
+                    updateItem={updateTask}/>
             </div>
 
             <IconButton
                 aria-label="delete"
-                onClick={removeTaskHandler}>
+                onClick={removeTask}>
                 <DeleteIcon fontSize="inherit"/>
             </IconButton>
         </ListItem>
