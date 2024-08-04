@@ -1,11 +1,11 @@
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, memo, useState} from "react";
 
 type EditableSpanPropsType = {
     oldTitle: string
     updateItem: (newTitle: string) => void
 }
 
-export const EditableSpan = ({oldTitle, updateItem}: EditableSpanPropsType) => {
+export const EditableSpan = memo(({oldTitle, updateItem}: EditableSpanPropsType) => {
     const [editMode, setEditMode] = useState(false)
     const [newTitle, setNewTitle] = useState(oldTitle)
     console.log(newTitle)
@@ -38,4 +38,4 @@ export const EditableSpan = ({oldTitle, updateItem}: EditableSpanPropsType) => {
             : <span
                 onDoubleClick={editModeHandler}>{oldTitle}</span>
     );
-};
+})

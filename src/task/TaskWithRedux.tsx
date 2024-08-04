@@ -16,7 +16,7 @@ type TaskPropsType = {
     changeTaskStatus: (taskId: string, newStatusValue: boolean) => void
 }
 
-export const Task = memo(({task, updateTask, removeTask, changeTaskStatus}: TaskPropsType) => {
+export const TaskWithRedux = memo(({task, updateTask, removeTask, changeTaskStatus}: TaskPropsType) => {
 
 
     // const removeTaskHandler = useCallback(() => {

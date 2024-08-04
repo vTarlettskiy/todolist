@@ -1,6 +1,5 @@
 import './App.css';
-import {Todolist} from "./todolist/Todolist";
-import {useReducer, useState} from "react";
+import {useCallback, useReducer, useState} from "react";
 import {v1} from "uuid";
 import {AddItemForm} from "./components/addItemForm/AddItemForm";
 import ButtonAppBar from "./components/button/ButtonAppBar";
@@ -79,11 +78,11 @@ function AppWithRedux() {
         dispatch(addTaskAC(title, todolistId))
     }
 
-    const addTodolist = (title: string) => {
+    const addTodolist = useCallback((title: string) => {
         let todolistId = v1()
         let action = addTodolistAC(todolistId ,title)
         dispatch(action)
-    }
+    }, [])
 
     const [themeMode, setThemeMode] = useState<ThemeMode>('light')
 
@@ -113,9 +112,6 @@ function AppWithRedux() {
 
                     <Grid container spacing={4}>
                         {todolists.map((tl) => {
-
-                            const allTodolistTasks = tasks[tl.id]
-                            let tasksForTodolist = allTodolistTasks
 
                             return (
                                 <Grid item key={tl.id}>

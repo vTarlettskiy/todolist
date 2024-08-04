@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import {ChangeEvent, KeyboardEvent, useState} from "react";
+import {ChangeEvent, KeyboardEvent, memo, useState} from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
@@ -8,7 +8,9 @@ type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 
-export const AddItemForm = ({addItem}: AddItemFormPropsType) => {
+export const AddItemForm = memo(({addItem}: AddItemFormPropsType) => {
+
+    console.log('AddItemForm')
 
     const [taskTitle, setTaskTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
@@ -27,7 +29,7 @@ export const AddItemForm = ({addItem}: AddItemFormPropsType) => {
     }
 
     const addTaskOnKeyUpHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
+        if (error) setError(null)
         if (event.key === 'Enter') {
             addItemHandler()
         }
@@ -56,4 +58,4 @@ export const AddItemForm = ({addItem}: AddItemFormPropsType) => {
             <Button variant="contained" onClick={addItemHandler} size='small' style={buttonStyles}>+</Button>
         </div>
     );
-};
+});
