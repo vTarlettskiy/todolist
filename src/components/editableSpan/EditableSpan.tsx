@@ -1,6 +1,6 @@
 import {ChangeEvent, memo, useState} from "react";
 
-type EditableSpanPropsType = {
+export type EditableSpanPropsType = {
     oldTitle: string
     updateItem: (newTitle: string) => void
 }

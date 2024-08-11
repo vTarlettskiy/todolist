@@ -4,7 +4,7 @@ import {ChangeEvent, KeyboardEvent, memo, useState} from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
-type AddItemFormPropsType = {
+export type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 

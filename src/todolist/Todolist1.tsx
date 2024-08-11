@@ -1,5 +1,5 @@
 import {FilterValuesType, TaskType} from "../AppWithRedux";
-import {ChangeEvent, memo, useCallback} from "react";
+import {ChangeEvent, memo, useCallback, useMemo} from "react";
 import {AddItemForm} from "../components/addItemForm/AddItemForm";
 import {EditableSpan} from "../components/editableSpan/EditableSpan";
 import {Task} from "../task/Task";
@@ -46,13 +46,16 @@ export const Todolist1 = memo(({todolist}: PropsType) => {
         dispatch(changeTodolistTitleAC(id, title))
     }, [dispatch])
 
-    if (filter === 'active') {
-        tasks = tasks.filter(t => !t.isDone)
-    }
+    tasks = useMemo(() => {
+        if (filter === 'active') {
+            tasks = tasks.filter(t => !t.isDone)
+        }
 
-    if (filter === 'completed') {
-        tasks = tasks.filter(t => t.isDone)
-    }
+        if (filter === 'completed') {
+            tasks = tasks.filter(t => t.isDone)
+        }
+        return tasks
+    }, [tasks, filter])
 
     // const changeTaskStatus = useCallback((taskId: string, newStatusValue: boolean) => {
     //     dispatch(changeTaskStatusAC(taskId, newStatusValue, id))
