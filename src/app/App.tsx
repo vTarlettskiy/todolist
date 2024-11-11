@@ -1,46 +1,41 @@
-import React from 'react'
-import './App.css'
-import { TodolistsList } from '../features/TodolistsList/TodolistsList'
+import CssBaseline from "@mui/material/CssBaseline"
+import { ThemeProvider } from "@mui/material/styles"
+import { ErrorSnackbar, Header } from "common/components"
+import { useAppDispatch, useAppSelector } from "common/hooks"
+import { getTheme } from "common/theme"
+import { useEffect } from "react"
+import { Outlet } from "react-router-dom"
+import { initializeAppTC } from "../features/auth/model/authSlice"
+import { selectIsInitialized } from "../features/auth/model/authSelectors"
+import CircularProgress from "@mui/material/CircularProgress"
+import s from "./App.module.css"
+import { selectThemeMode } from "./appSlice"
 
-// You can learn about the difference by reading this guide on minimizing bundle size.
-// https://mui.com/guides/minimizing-bundle-size/
-// import { AppBar, Button, Container, IconButton, Toolbar, Typography } from '@mui/material';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import { Menu } from '@mui/icons-material';
-import LinearProgress from "@mui/material/LinearProgress";
-import {useAppSelector} from "./store";
-import {CustomizedSnackbar} from "../components/ErrorSnackbar/errorSnackbar";
+export const App = () => {
+  const themeMode = useAppSelector(selectThemeMode)
+  const isInitialized = useAppSelector(selectIsInitialized)
 
+  const dispatch = useAppDispatch()
 
-function App() {
+  useEffect(() => {
+    dispatch(initializeAppTC())
+  }, [])
 
-    const status = useAppSelector((state) => state.app.status)
-
-    return (
-        <div className="App">
-            <CustomizedSnackbar/>
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <Menu/>
-                    </IconButton>
-                    <Typography variant="h6">
-                        News
-                    </Typography>
-                    <Button color="inherit">Login</Button>
-                </Toolbar>
-            </AppBar>
-            {status === 'loading' && <LinearProgress color="secondary"/>}
-            <Container fixed>
-                <TodolistsList/>
-            </Container>
+  return (
+    <ThemeProvider theme={getTheme(themeMode)}>
+      <CssBaseline />
+      {isInitialized && (
+        <>
+          <Header />
+          <Outlet />
+        </>
+      )}
+      {!isInitialized && (
+        <div className={s.circularProgressContainer}>
+          <CircularProgress size={150} thickness={3} />
         </div>
-    )
+      )}
+      <ErrorSnackbar />
+    </ThemeProvider>
+  )
 }
-
-export default App
