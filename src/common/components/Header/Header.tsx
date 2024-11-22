@@ -18,6 +18,7 @@ import { useLogoutMutation } from "../../../features/auth/api/authAPI"
 import { clearTasks } from "../../../features/todolists/model/tasksSlice"
 import { clearTodolists } from "../../../features/todolists/model/todolistsSlice"
 import { ResultCode } from "common/enums"
+import { baseApi } from "../../../app/baseApi"
 
 
 export const Header = () => {
@@ -40,8 +41,7 @@ export const Header = () => {
       if (res.data?.resultCode === ResultCode.Success) {
         dispatch(setIsLoggedIn({ isLoggedIn: false }))
         localStorage.removeItem('sn-token')
-        dispatch(clearTasks())
-        dispatch(clearTodolists())
+        dispatch(baseApi.util.resetApiState())
       }
     })
   }

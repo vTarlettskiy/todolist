@@ -3,15 +3,26 @@ import { BaseResponse } from "common/types"
 import { DomainTask, GetTasksResponse, UpdateTaskModel } from "./tasksApi.types"
 import { baseApi } from "../../../app/baseApi"
 
+export const PAGE_SIZE = 4
+
 export const tasksApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getTasks: build.query<GetTasksResponse, string>({
-      query: (todolistId: string) => {
+    getTasks: build.query<GetTasksResponse,  { todolistId: string; args: { page: number } }>({
+      query: ({todolistId, args}) => {
+        const params = { ...args, count: PAGE_SIZE }
+
         return {
           url: `todo-lists/${todolistId}/tasks`,
+          params
         }
       },
-      providesTags: ["Task"],
+      providesTags: (res, err, { todolistId }) =>
+        res
+          ? [
+            ...res.items.map(({ id }) => ({ type: 'Task', id }) as const),
+            { type: 'Task', id: todolistId },
+          ]
+          : ['Task'],
     }),
    createTask: build.mutation<BaseResponse<{item: DomainTask}>, { title: string; todolistId: string }>({
      query: ({ title, todolistId }) => {
@@ -21,7 +32,7 @@ export const tasksApi = baseApi.injectEndpoints({
          body: { title },
        }
      },
-     invalidatesTags: ['Task']
+     invalidatesTags: (res, err, { todolistId }) => [{ type: 'Task', id: todolistId }],
    }),
     deleteTask: build.mutation<BaseResponse, { todolistId: string; taskId: string }>({
       query: ({ todolistId, taskId }) => {
@@ -30,7 +41,7 @@ export const tasksApi = baseApi.injectEndpoints({
           method: "DELETE",
         }
       },
-      invalidatesTags: ['Task']
+      invalidatesTags: (res, err, { taskId }) => [{ type: 'Task', id: taskId }],
     }),
     updateTask: build.mutation<BaseResponse<{ item: DomainTask }>, { todolistId: string; taskId: string; model: UpdateTaskModel }>({
       query: ({ todolistId, taskId, model }) => {
@@ -40,7 +51,7 @@ export const tasksApi = baseApi.injectEndpoints({
           body: model
         }
       },
-      invalidatesTags: ['Task']
+      invalidatesTags: (res, err, { taskId }) => [{ type: 'Task', id: taskId }],
     })
   })
 })

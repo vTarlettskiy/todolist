@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit"
 import { LoginArgs } from "../features/auth/api/authAPI.types"
 import { Dispatch } from "redux"
 import { authApi } from "../features/auth/api/authAPI"
@@ -7,6 +7,8 @@ import { handleServerAppError } from "common/utils/handleServerAppError"
 import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
 import { clearTasks } from "../features/todolists/model/tasksSlice"
 import { clearTodolists } from "../features/todolists/model/todolistsSlice"
+import { tasksApi } from "../features/todolists/api/tasksApi"
+import { todolistsApi } from "../features/todolists/api/todolistsApi"
 
 export type ThemeMode = "dark" | "light"
 export type RequestStatus = "idle" | "loading" | "succeeded" | "failed"
@@ -17,7 +19,7 @@ export const appSlice = createSlice({
     themeMode: "dark" as ThemeMode,
     status: "idle" as RequestStatus,
     error: null as string | null,
-    isLoggedIn: false,
+    isLoggedIn: false
   },
 
   reducers: (create) => {
@@ -33,14 +35,32 @@ export const appSlice = createSlice({
       }),
       setIsLoggedIn: create.reducer<{ isLoggedIn: boolean }>((state, action) => {
         state.isLoggedIn = action.payload.isLoggedIn
-      }),
+      })
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(isPending, (state, action) => {
+        if (
+          todolistsApi.endpoints.getTodolists.matchPending(action) ||
+          tasksApi.endpoints.getTasks.matchPending(action)
+        ) {
+          return
+        }
+        state.status = "loading"
+      })
+      .addMatcher(isFulfilled, (state) => {
+        state.status = "succeeded"
+      })
+      .addMatcher(isRejected, (state) => {
+        state.status = "failed"
+      })
   },
   selectors: {
     selectThemeMode: (state) => state.themeMode,
     selectStatus: (state) => state.status,
     selectError: (state) => state.error,
-    selectIsLoggedIn: state => state.isLoggedIn,
+    selectIsLoggedIn: state => state.isLoggedIn
   }
 })
 
