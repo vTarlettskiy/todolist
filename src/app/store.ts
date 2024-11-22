@@ -1,10 +1,12 @@
 import { applyMiddleware, combineReducers, legacy_createStore, UnknownAction } from "redux"
 import { thunk, ThunkDispatch } from "redux-thunk"
-import { authReducer, authSlice } from "../features/auth/model/authSlice"
 import { tasksReducer, tasksSlice } from "../features/todolists/model/tasksSlice"
 import { todolistsReducer, todolistsSlice } from "../features/todolists/model/todolistsSlice"
 import { appReducer, appSlice } from "./appSlice"
 import { configureStore } from "@reduxjs/toolkit"
+import { setupListeners } from "@reduxjs/toolkit/query"
+import { baseApi } from "./baseApi"
+import { todolistsApi } from "../features/todolists/api/todolistsApi"
 
 
 export const store = configureStore({
@@ -12,8 +14,9 @@ export const store = configureStore({
     [tasksSlice.name]: tasksReducer,
     [todolistsSlice.name]: todolistsReducer,
     [appSlice.name]: appReducer,
-    [authSlice.name]: authReducer,
-  }
+    [baseApi.reducerPath]: baseApi.reducer,
+  },
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(baseApi.middleware),
 })
 
 export type RootState = ReturnType<typeof store.getState>
@@ -25,3 +28,5 @@ export type AppDispatch = ThunkDispatch<RootState, unknown, UnknownAction>
 
 // @ts-ignore
 window.store = store
+
+setupListeners(store.dispatch)

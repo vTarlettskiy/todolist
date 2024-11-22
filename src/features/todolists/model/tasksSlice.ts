@@ -48,6 +48,9 @@ export const tasksSlice = createSlice({
       return {}
     }),
   }),
+  selectors: {
+    selectTasks: (state) => state
+  },
   extraReducers: (builder) => {
     builder
       .addCase(addTodolist, (state, action) => {
@@ -60,92 +63,93 @@ export const tasksSlice = createSlice({
 })
 
 export const {updateTask, removeTask, addTask, setTasks, clearTasks} = tasksSlice.actions
+export const {selectTasks} = tasksSlice.selectors
 export const tasksReducer = tasksSlice.reducer
 
 
 // Thunks
-export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
-  dispatch(setAppStatus({status: "loading"}))
-  tasksApi
-    .getTasks(todolistId)
-    .then((res) => {
-      dispatch(setAppStatus({status: "succeeded"}))
-      dispatch(setTasks({ todolistId, tasks: res.data.items }))
-    })
-    .catch((error) => {
-      handleServerNetworkError(error, dispatch)
-    })
-}
-
-export const removeTaskTC = (arg: { taskId: string; todolistId: string }) => (dispatch: Dispatch) => {
-  dispatch(setAppStatus({status: "loading"}))
-  tasksApi
-    .deleteTask(arg)
-    .then((res) => {
-      if (res.data.resultCode === ResultCode.Success) {
-        dispatch(setAppStatus({status: "succeeded"}))
-        dispatch(removeTask({ todolistId: arg.todolistId, taskId: arg.taskId }))
-      } else {
-        handleServerAppError(res.data, dispatch)
-      }
-    })
-    .catch((error) => {
-      handleServerNetworkError(error, dispatch)
-    })
-}
-
-export const addTaskTC = (arg: { title: string; todolistId: string }) => (dispatch: Dispatch) => {
-  dispatch(setAppStatus({status: "loading"}))
-  tasksApi
-    .createTask(arg)
-    .then((res) => {
-      if (res.data.resultCode === ResultCode.Success) {
-        dispatch(setAppStatus({status: "succeeded"}))
-        dispatch(addTask({ task: res.data.data.item }))
-      } else {
-        handleServerAppError(res.data, dispatch)
-      }
-    })
-    .catch((error) => {
-      handleServerNetworkError(error, dispatch)
-    })
-}
-
-export const updateTaskTC =
-  (arg: { taskId: string; todolistId: string; domainModel: UpdateTaskDomainModel }) =>
-  (dispatch: Dispatch, getState: () => RootState) => {
-    const { taskId, todolistId, domainModel } = arg
-
-    const allTasksFromState = getState().tasks
-    const tasksForCurrentTodolist = allTasksFromState[todolistId]
-    const task = tasksForCurrentTodolist.find((t) => t.id === taskId)
-
-    if (task) {
-      const model: UpdateTaskModel = {
-        status: task.status,
-        title: task.title,
-        deadline: task.deadline,
-        description: task.description,
-        priority: task.priority,
-        startDate: task.startDate,
-        ...domainModel,
-      }
-
-      dispatch(setAppStatus({status: "loading"}))
-      tasksApi
-        .updateTask({ taskId, todolistId, model })
-        .then((res) => {
-          if (res.data.resultCode === ResultCode.Success) {
-            dispatch(setAppStatus({status: "succeeded"}))
-            dispatch(updateTask({ taskId, todolistId, domainModel: model }))
-          } else {
-            handleServerAppError(res.data, dispatch)
-          }
-        })
-        .catch((error) => {
-          handleServerNetworkError(error, dispatch)
-        })
-    }
-  }
+// export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
+//   dispatch(setAppStatus({status: "loading"}))
+//   tasksApi
+//     .getTasks(todolistId)
+//     .then((res) => {
+//       dispatch(setAppStatus({status: "succeeded"}))
+//       dispatch(setTasks({ todolistId, tasks: res.data.items }))
+//     })
+//     .catch((error) => {
+//       handleServerNetworkError(error, dispatch)
+//     })
+// }
+//
+// export const removeTaskTC = (arg: { taskId: string; todolistId: string }) => (dispatch: Dispatch) => {
+//   dispatch(setAppStatus({status: "loading"}))
+//   tasksApi
+//     .deleteTask(arg)
+//     .then((res) => {
+//       if (res.data.resultCode === ResultCode.Success) {
+//         dispatch(setAppStatus({status: "succeeded"}))
+//         dispatch(removeTask({ todolistId: arg.todolistId, taskId: arg.taskId }))
+//       } else {
+//         handleServerAppError(res.data, dispatch)
+//       }
+//     })
+//     .catch((error) => {
+//       handleServerNetworkError(error, dispatch)
+//     })
+// }
+//
+// export const addTaskTC = (arg: { title: string; todolistId: string }) => (dispatch: Dispatch) => {
+//   dispatch(setAppStatus({status: "loading"}))
+//   tasksApi
+//     .createTask(arg)
+//     .then((res) => {
+//       if (res.data.resultCode === ResultCode.Success) {
+//         dispatch(setAppStatus({status: "succeeded"}))
+//         dispatch(addTask({ task: res.data.data.item }))
+//       } else {
+//         handleServerAppError(res.data, dispatch)
+//       }
+//     })
+//     .catch((error) => {
+//       handleServerNetworkError(error, dispatch)
+//     })
+// }
+//
+// export const updateTaskTC =
+//   (arg: { taskId: string; todolistId: string; domainModel: UpdateTaskDomainModel }) =>
+//   (dispatch: Dispatch, getState: () => RootState) => {
+//     const { taskId, todolistId, domainModel } = arg
+//
+//     const allTasksFromState = getState().tasks
+//     const tasksForCurrentTodolist = allTasksFromState[todolistId]
+//     const task = tasksForCurrentTodolist.find((t) => t.id === taskId)
+//
+//     if (task) {
+//       const model: UpdateTaskModel = {
+//         status: task.status,
+//         title: task.title,
+//         deadline: task.deadline,
+//         description: task.description,
+//         priority: task.priority,
+//         startDate: task.startDate,
+//         ...domainModel,
+//       }
+//
+//       dispatch(setAppStatus({status: "loading"}))
+//       tasksApi
+//         .updateTask({ taskId, todolistId, model })
+//         .then((res) => {
+//           if (res.data.resultCode === ResultCode.Success) {
+//             dispatch(setAppStatus({status: "succeeded"}))
+//             dispatch(updateTask({ taskId, todolistId, domainModel: model }))
+//           } else {
+//             handleServerAppError(res.data, dispatch)
+//           }
+//         })
+//         .catch((error) => {
+//           handleServerNetworkError(error, dispatch)
+//         })
+//     }
+//   }
 
 
