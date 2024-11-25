@@ -3,8 +3,8 @@ import { BaseResponse } from "common/types"
 import { Todolist } from "./todolistsApi.types"
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { DomainTodolist } from "../model/todolistsSlice"
 import { baseApi } from "../../../app/baseApi"
+import { DomainTodolist } from "../ui/Todolists/Types/types"
 
 export const todolistsApi = baseApi.injectEndpoints({
 

@@ -1,7 +1,5 @@
 import { applyMiddleware, combineReducers, legacy_createStore, UnknownAction } from "redux"
 import { thunk, ThunkDispatch } from "redux-thunk"
-import { tasksReducer, tasksSlice } from "../features/todolists/model/tasksSlice"
-import { todolistsReducer, todolistsSlice } from "../features/todolists/model/todolistsSlice"
 import { appReducer, appSlice } from "./appSlice"
 import { configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
@@ -11,8 +9,6 @@ import { todolistsApi } from "../features/todolists/api/todolistsApi"
 
 export const store = configureStore({
   reducer: {
-    [tasksSlice.name]: tasksReducer,
-    [todolistsSlice.name]: todolistsReducer,
     [appSlice.name]: appReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },

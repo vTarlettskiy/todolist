@@ -1,12 +1,4 @@
 import { createSlice, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit"
-import { LoginArgs } from "../features/auth/api/authAPI.types"
-import { Dispatch } from "redux"
-import { authApi } from "../features/auth/api/authAPI"
-import { ResultCode } from "common/enums"
-import { handleServerAppError } from "common/utils/handleServerAppError"
-import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
-import { clearTasks } from "../features/todolists/model/tasksSlice"
-import { clearTodolists } from "../features/todolists/model/todolistsSlice"
 import { tasksApi } from "../features/todolists/api/tasksApi"
 import { todolistsApi } from "../features/todolists/api/todolistsApi"
 

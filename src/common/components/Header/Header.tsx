@@ -15,8 +15,6 @@ import { useAppDispatch, useAppSelector } from "common/hooks"
 import { getTheme } from "common/theme"
 import { MenuButton } from "common/components"
 import { useLogoutMutation } from "../../../features/auth/api/authAPI"
-import { clearTasks } from "../../../features/todolists/model/tasksSlice"
-import { clearTodolists } from "../../../features/todolists/model/todolistsSlice"
 import { ResultCode } from "common/enums"
 import { baseApi } from "../../../app/baseApi"
 

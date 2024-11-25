@@ -1,11 +1,11 @@
 import { AddItemForm } from "common/components"
 import { useAppDispatch } from "common/hooks"
-import { DomainTodolist } from "../../../model/todolistsSlice"
 
 import { FilterTasksButtons } from "./FilterTasksButtons/FilterTasksButtons"
 import { Tasks } from "./Tasks/Tasks"
 import { TodolistTitle } from "./TodolistTitle/TodolistTitle"
 import { useCreateTaskMutation } from "../../../api/tasksApi"
+import { DomainTodolist } from "../Types/types"
 
 type Props = {
   todolist: DomainTodolist
