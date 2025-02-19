@@ -1,9 +1,10 @@
-import { DomainTodolist } from "../../../features/todolists/ui/Todolists/Types/types"
+import { DomainTodolist } from "../../../../Types/types"
 import { useState } from "react"
-import { useGetTasksQuery } from "../../../features/todolists/api/tasksApi"
+import { useGetTasksQuery } from "../../../../../../api/tasksApi"
 import { TaskStatus } from "common/enums"
 
 export const useTasks = (todolist: DomainTodolist) => {
+
   const { filter, id } = todolist
 
   const [page, setPage] = useState(1)

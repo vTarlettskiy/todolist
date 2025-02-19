@@ -6,13 +6,6 @@ import { useLogin } from "../../lib/hooks/useLogin"
 import { LoginFormLabel } from "./LoginFormLabel/LoginFormLabel"
 import { LoginForm } from "./LoginForm/LoginForm"
 
-
-// type Inputs = {
-//   email: string
-//   password: string
-//   rememberMe: boolean
-// }
-
 export const Login = () => {
   const { isLoggedIn } = useLogin()
 

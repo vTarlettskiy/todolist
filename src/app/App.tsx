@@ -5,8 +5,6 @@ import { useAppDispatch, useAppSelector } from "common/hooks"
 import { getTheme } from "common/theme"
 import { useEffect, useState } from "react"
 import { Outlet } from "react-router-dom"
-// import { initializeAppTC } from "../features/auth/model/authSlice"
-// import { selectIsInitialized } from "../features/auth/model/authSelectors"
 import CircularProgress from "@mui/material/CircularProgress"
 import s from "./App.module.css"
 import { selectThemeMode, setIsLoggedIn } from "./appSlice"
@@ -15,7 +13,6 @@ import { ResultCode } from "common/enums"
 
 export const App = () => {
   const themeMode = useAppSelector(selectThemeMode)
-  // const isInitialized = useAppSelector(selectIsInitialized)
   const [isInitialized, setIsInitialized] = useState(false)
   const dispatch = useAppDispatch()
 

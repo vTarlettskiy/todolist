@@ -12,18 +12,13 @@ type Props = {
 }
 
 export const TodolistTitle = ({ todolist }: Props) => {
+
   const { title, id, entityStatus } = todolist
 
   const [updateTodolistTitle] = useUpdateTodolistTitleMutation()
   const [removeTodolist] = useRemoveTodolistMutation()
 
-
   const dispatch = useAppDispatch()
-
-  // const removeTodolistHandler = () => {
-  //   // dispatch(removeTodolistTC(id))
-  //   removeTodolist(id)
-  // }
 
   const updateQueryData = (status: RequestStatus) => {
     dispatch(
@@ -46,7 +41,6 @@ export const TodolistTitle = ({ todolist }: Props) => {
   }
 
   const updateTodolistHandler = (title: string) => {
-    // dispatch(updateTodolistTitleTC({ id, title }))
     updateTodolistTitle({ id, title })
   }
 

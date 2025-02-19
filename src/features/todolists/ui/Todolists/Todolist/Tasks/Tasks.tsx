@@ -1,9 +1,9 @@
 import List from "@mui/material/List"
 import { Task } from "./Task/Task"
 import { TasksSkeleton } from "../../../skeletons/TasksSkeleton/TasksSkeleton"
-import { TasksPagination } from "../../../../../../todoists/ui/Todolists/Todolist/TasksPagination/TasksPagination"
+import { TasksPagination } from "../TasksPagination/TasksPagination"
 import { DomainTodolist } from "../../Types/types"
-import { useTasks } from "../../../../../../todolists/lib/hooks/useTasks"
+import { useTasks } from "./lib/hooks/useTasks"
 
 type Props = {
   todolist: DomainTodolist
@@ -28,7 +28,11 @@ export const Tasks = ({ todolist }: Props) => {
               return <Task key={task.id} task={task} todolist={todolist} />
             })}
           </List>
-          <TasksPagination totalCount={totalCount || 0} page={page} setPage={setPage} />
+          {
+            totalCount !== undefined && totalCount > 4 && (
+              <TasksPagination totalCount={totalCount} page={page} setPage={setPage} />
+            )
+          }
         </>
       )}
     </>

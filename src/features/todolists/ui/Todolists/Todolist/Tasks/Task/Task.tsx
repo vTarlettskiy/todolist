@@ -1,6 +1,5 @@
 import { EditableSpan } from "common/components"
 import { TaskStatus } from "common/enums"
-import { useAppDispatch } from "common/hooks"
 import { DomainTask, UpdateTaskModel } from "../../../../../api/tasksApi.types"
 import { getListItemSx } from "./Task.styles"
 import { ChangeEvent } from "react"
@@ -17,19 +16,16 @@ type Props = {
 }
 
 export const Task = ({ task, todolist }: Props) => {
-  // const dispatch = useAppDispatch()
 
   const [deleteTask] = useDeleteTaskMutation()
   const [updateTask] = useUpdateTaskMutation()
 
   const removeTaskHandler = () => {
-    // dispatch(removeTaskTC({ taskId: task.id, todolistId: todolist.id }))
     deleteTask({taskId: task.id, todolistId: todolist.id})
   }
 
   const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let status = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
-    // dispatch(updateTaskTC({ taskId: task.id, todolistId: todolist.id, domainModel: { status } }))
     const model: UpdateTaskModel = {
       status,
       title: task.title,
@@ -43,7 +39,6 @@ export const Task = ({ task, todolist }: Props) => {
   }
 
   const changeTaskTitleHandler = (title: string) => {
-    // dispatch(updateTaskTC({ taskId: task.id, todolistId: todolist.id, domainModel: { title } }))
 
     const model: UpdateTaskModel = {
       status: task.status,

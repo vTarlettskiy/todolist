@@ -1,10 +1,7 @@
 import Paper from "@mui/material/Paper"
 import Grid from "@mui/material/Unstable_Grid2"
-import { useEffect, useState } from "react"
-import { useAppDispatch, useAppSelector } from "common/hooks"
 import { Todolist } from "./Todolist/Todolist"
 import { useGetTodolistsQuery } from "../../api/todolistsApi"
-import { Skeleton } from "@mui/material"
 import { TodolistSkeleton } from "../skeletons/TodolistSkeleton/TodolistSkeleton"
 
 export const Todolists = () => {
